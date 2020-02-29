@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackdrop"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tvFlashQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:text="@string/flash_question"
+        android:textSize="40sp"
+        android:background="@drawable/question_background"/>
+
+    <TextView
+        android:id="@+id/tvFlashWrong1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvFlashQuestion"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/flash_wrong1"
+        android:textSize="40sp"
+        android:gravity="center"
+        android:background="@drawable/answer_background"/>
+
+    <TextView
+        android:id="@+id/tvFlashAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvFlashWrong1"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/flash_answer"
+        android:textSize="40sp"
+        android:gravity="center"
+        android:background="@drawable/answer_background"/>
+
+    <TextView
+        android:id="@+id/tvFlashWrong2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvFlashAnswer"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/flash_wrong2"
+        android:textSize="40sp"
+        android:gravity="center"
+        android:background="@drawable/answer_background"/>
+
+</RelativeLayout>

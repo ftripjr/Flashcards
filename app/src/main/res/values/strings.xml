@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Flashcards</string>
+    <string name="flash_question">Who is the creator of Facebook?</string>
+    <string name="flash_answer">Mark Zuckerburg</string>
+    <string name="flash_wrong1">Rob Reid</string>
+    <string name="flash_wrong2">Elon Musk</string>
+    <string name="flash_wrong3">Nikola Tesla</string>
+</resources>
