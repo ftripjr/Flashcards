@@ -5,4 +5,7 @@
     <string name="flash_wrong1">Rob Reid</string>
     <string name="flash_wrong2">Elon Musk</string>
     <string name="flash_wrong3">Nikola Tesla</string>
+    <string name="add_question">What is your question?</string>
+    <string name="ans_hint">Correct Answer</string>
+    <string name="wrong_hint">Incorrect Answer</string>
 </resources>
