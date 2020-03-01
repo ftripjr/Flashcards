@@ -1,4 +1,4 @@
-# Lab 2 : Flashcards 
+# Lab 2 : Flashcards
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
