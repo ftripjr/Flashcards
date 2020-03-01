@@ -2,17 +2,17 @@
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
-- [ ] The 'Add Card Screen' has a cancel button to take the user back to the main screen
-- [ ] User can enter and submit a Question and Answer through the 'Add Card Screen'
-- [ ] User will see the card they just created on the main screen when they press the 'Save Button'
+- [x] The 'Add Card Screen' has a cancel button to take the user back to the main screen
+- [x] User can enter and submit a Question and Answer through the 'Add Card Screen'
+- [x] User will see the card they just created on the main screen when they press the 'Save Button'
 - [x] Push your progress to GitHub!
 
 ## Optional
-- [ ] User can edit a card
-- [ ] An error message is shown if the user doesn't enter both a Question and an Answer
+- [x] User can edit a card
+- [x] An error message is shown if the user doesn't enter both a Question and an Answer
 - [ ] A notification is shown if the card was created successfully
-- [ ] User can also enter multiple choice answers when creating a card
-- [ ] App is further styled and customized!
+- [x] User can also enter multiple choice answers when creating a card
+- [x] App is further styled and customized!
 
 <img src="https://i.imgur.com/ikHO0e2.gif" width="200" height="400" />
 
@@ -32,7 +32,7 @@
 - [x] Style the question and answer side of the card to better distinguish between the two sides
 - [x] Add selectable multiple choice answers beneath the card
 - [x] Change the background color of the multiple choice answers when clicked to indicate whether the question was answered correctly
-- [ ] Further customize and style the card
-- [ ] Add a button that will toggle hiding and showing the answer choices
+- [x] Further customize and style the card
+- [x] Add a button that will toggle hiding and showing the answer choices
 
 <img src="flashcard-recording.gif" width="200" height="400" />

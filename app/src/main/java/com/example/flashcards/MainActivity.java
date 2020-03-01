@@ -98,18 +98,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AddCardActivity.class);
-                MainActivity.this.startActivity(i);
+                MainActivity.this.startActivityForResult(i, REQUEST_CODE);
             }
         });
 
         ivEditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String question = tvQuestion.getText().toString();
+                String answer = tvAnswer.getText().toString();
+                String wrong1 = tvWrong1.getText().toString();
+                String wrong2 = tvWrong2.getText().toString();
+
                 Intent i = new Intent(MainActivity.this, AddCardActivity.class);
-                i.putExtra("question", tvQuestion.toString());
-                i.putExtra("answer", tvAnswer.toString());
-                i.putExtra("wrong1", tvWrong1.toString());
-                i.putExtra("wrong2", tvWrong2.toString());
+                i.putExtra("question", question);
+                i.putExtra("answer", answer);
+                i.putExtra("wrong1", wrong1);
+                i.putExtra("wrong2", wrong2);
                 MainActivity.this.startActivityForResult(i, REQUEST_CODE);
             }
         });
@@ -151,10 +156,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            String question = data.getExtras().getString("question");
-            String answer = data.getExtras().getString("answer");
-            String wrong1 = data.getExtras().getString("wrong1");
-            String wrong2 = data.getExtras().getString("wrong2");
+            String question = data.getStringExtra("question");
+            String answer = data.getStringExtra("answer");
+            String wrong1 = data.getStringExtra("wrong1");
+            String wrong2 = data.getStringExtra("wrong2");
+
+            // Change text in text views
+            tvQuestion.setText(question);
+            tvFlashBack.setText(answer);
+            tvAnswer.setText(answer);
+            tvWrong1.setText(wrong1);
+            tvWrong2.setText(wrong2);
         }
     }
 }
