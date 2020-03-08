@@ -48,7 +48,7 @@
         android:background="@drawable/answer_background"
         android:gravity="center"
         android:text="@string/flash_wrong1"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/tvFlashAnswer"
@@ -61,7 +61,7 @@
         android:background="@drawable/answer_background"
         android:gravity="center"
         android:text="@string/flash_answer"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/tvFlashWrong2"
@@ -74,52 +74,77 @@
         android:background="@drawable/answer_background"
         android:gravity="center"
         android:text="@string/flash_wrong2"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <ImageView
         android:id="@+id/ivEditCard"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/tvFlashWrong2"
         android:layout_alignParentStart="true"
         android:layout_marginStart="15dp"
         android:elevation="5dp"
-        app:srcCompat="@drawable/ic_icon_edit"
+        app:srcCompat="@drawable/ic_edit"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/ivAddCard"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/tvFlashWrong2"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp"
         android:elevation="5dp"
-        app:srcCompat="@drawable/ic_icon_add"
+        app:srcCompat="@drawable/ic_add"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/ivEyeOn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/tvFlashWrong2"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="20dp"
         android:layout_toEndOf="@id/ivEditCard"
         android:elevation="5dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/ic_icon_eye_open"
+        app:srcCompat="@drawable/ic_eye_open"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/ivEyeOff"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/tvFlashWrong2"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="20dp"
         android:layout_toEndOf="@id/ivEditCard"
         android:elevation="5dp"
         android:visibility="visible"
-        app:srcCompat="@drawable/ic_icon_eye_close"
+        app:srcCompat="@drawable/ic_eye_close"
         tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivNext"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvFlashWrong2"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@id/ivEyeOn"
+        android:elevation="5dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_next"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvFlashWrong2"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@id/ivDelete"
+        android:elevation="5dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_next"
+        tools:ignore="ContentDescription" />
+
 
 </RelativeLayout>

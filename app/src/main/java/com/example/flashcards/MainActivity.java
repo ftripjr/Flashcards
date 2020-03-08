@@ -10,37 +10,67 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE = 20;
 
+    RelativeLayout relBackdrop;
+
+    // TextViews
     TextView tvQuestion;
     TextView tvFlashBack;
     TextView tvAnswer;
     TextView tvWrong1;
     TextView tvWrong2;
+
+    // ImageViews
     ImageView ivAddCard;
     ImageView ivEditCard;
     ImageView ivEyeOn;
     ImageView ivEyeOff;
-    RelativeLayout relBackdrop;
+    ImageView ivNext;
+    ImageView ivDelete;
+
+    // Flashcard
+    List<Flashcard> allFlashcards;
+    FlashcardDatabase fcDatabase;
+    int currCardDisplayedIndex = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        relBackdrop = findViewById(R.id.rlBackdrop);
+
         tvQuestion = findViewById(R.id.tvFlashQuestion);
         tvFlashBack = findViewById(R.id.tvFlashBackAnswer);
         tvAnswer= findViewById(R.id.tvFlashAnswer);
         tvWrong1 = findViewById(R.id.tvFlashWrong1);
         tvWrong2 = findViewById(R.id.tvFlashWrong2);
+
         ivAddCard = findViewById(R.id.ivAddCard);
         ivEditCard = findViewById(R.id.ivEditCard);
         ivEyeOn = findViewById(R.id.ivEyeOn);
-        ivEyeOff= findViewById(R.id.ivEyeOff);
-        relBackdrop = findViewById(R.id.rlBackdrop);
+        ivEyeOff = findViewById(R.id.ivEyeOff);
+        ivDelete = findViewById(R.id.ivDelete);
+        ivNext = findViewById(R.id.ivNext);
 
+        fcDatabase= new FlashcardDatabase(getApplicationContext());
+
+        if(allFlashcards != null && allFlashcards.size() > 0)
+        {
+            tvQuestion.setText(allFlashcards.get(0).getQuestion());
+            tvAnswer.setText(allFlashcards.get(0).getAnswer());
+            tvWrong1.setText(allFlashcards.get(0).getWrongAnswer1());
+            tvWrong2.setText(allFlashcards.get(0).getWrongAnswer2());
+            tvFlashBack.setText(allFlashcards.get(0).getAnswer());
+        }
 
         relBackdrop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +177,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ivNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currCardDisplayedIndex++;
+
+                if (currCardDisplayedIndex > allFlashcards.size() - 1) {
+                    currCardDisplayedIndex = 0;
+                }
+
+                tvQuestion.setText(allFlashcards.get(currCardDisplayedIndex).getQuestion());
+                tvFlashBack.setText(allFlashcards.get(currCardDisplayedIndex).getAnswer());
+                tvAnswer.setText(allFlashcards.get(currCardDisplayedIndex).getAnswer());
+                tvWrong1.setText(allFlashcards.get(currCardDisplayedIndex).getWrongAnswer1());
+                tvWrong2.setText(allFlashcards.get(currCardDisplayedIndex).getWrongAnswer2());
+            }
+        });
+
+        ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fcDatabase.deleteCard(tvQuestion.getText().toString());
+            }
+        });
+
     }
 
     @Override
@@ -160,6 +214,15 @@ public class MainActivity extends AppCompatActivity {
             String answer = data.getStringExtra("answer");
             String wrong1 = data.getStringExtra("wrong1");
             String wrong2 = data.getStringExtra("wrong2");
+
+            tvQuestion.setVisibility(View.VISIBLE);
+            tvFlashBack.setVisibility(View.INVISIBLE);
+
+            Snackbar.make(tvQuestion,"New card created!", Snackbar.LENGTH_SHORT).show();
+
+            fcDatabase.insertCard(new Flashcard(question, answer, wrong1, wrong2));
+
+            allFlashcards = fcDatabase.getAllCards();
 
             // Change text in text views
             tvQuestion.setText(question);
