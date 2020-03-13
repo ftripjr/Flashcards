@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         ivNext = findViewById(R.id.ivNext);
 
         fcDatabase= new FlashcardDatabase(getApplicationContext());
+        allFlashcards = fcDatabase.getAllCards();
 
         if(allFlashcards != null && allFlashcards.size() > 0)
         {
@@ -198,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fcDatabase.deleteCard(tvQuestion.getText().toString());
+                fcDatabase.getAllCards();
+                currCardDisplayedIndex--;
             }
         });
 
@@ -231,5 +235,10 @@ public class MainActivity extends AppCompatActivity {
             tvWrong1.setText(wrong1);
             tvWrong2.setText(wrong2);
         }
+    }
+
+    public int getRandomNumber(int minNumber, int maxNumber) {
+        Random rand = new Random();
+        return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
     }
 }
