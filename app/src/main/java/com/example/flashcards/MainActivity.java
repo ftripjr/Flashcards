@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,11 +14,13 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int REQUEST_CODE = 20;
-
+    private final int ADD_CARD_REQUEST_CODE = 20;
+    private final int EDIT_CARD_REQUEST_CODE = 30;
+    public static final String TAG_IVNEXT = "MainActivity - ivNext";
     RelativeLayout relBackdrop;
 
     // TextViews
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     // Flashcard
     List<Flashcard> allFlashcards;
     FlashcardDatabase fcDatabase;
+    Flashcard cardToEdit;
+
     int currCardDisplayedIndex = 0;
 
 
@@ -62,44 +67,40 @@ public class MainActivity extends AppCompatActivity {
         ivNext = findViewById(R.id.ivNext);
 
         fcDatabase= new FlashcardDatabase(getApplicationContext());
+        allFlashcards = fcDatabase.getAllCards();
 
         if(allFlashcards != null && allFlashcards.size() > 0)
         {
+            Toast.makeText(this, TAG_IVNEXT + " -- DATABASE SIZE = " + allFlashcards.size() , Toast.LENGTH_LONG).show();
+
             tvQuestion.setText(allFlashcards.get(0).getQuestion());
             tvAnswer.setText(allFlashcards.get(0).getAnswer());
             tvWrong1.setText(allFlashcards.get(0).getWrongAnswer1());
             tvWrong2.setText(allFlashcards.get(0).getWrongAnswer2());
             tvFlashBack.setText(allFlashcards.get(0).getAnswer());
+        } else {
+            Toast.makeText(this, TAG_IVNEXT + " -- DATABASE SIZE = Empty" , Toast.LENGTH_LONG).show();
+            Log.i(TAG_IVNEXT, "DATABASE SIZE = " + allFlashcards.size());
         }
 
         relBackdrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvAnswer.setBackground(getDrawable(R.drawable.answer_background));
-                tvWrong1.setBackground(getDrawable(R.drawable.answer_background));
-                tvWrong2.setBackground(getDrawable(R.drawable.answer_background));
+                clearScreen();
             }
         });
 
         tvQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-                if (tvQuestion.getVisibility() == View.VISIBLE)
-                {
-                    tvQuestion.setVisibility(View.INVISIBLE);
-                    tvFlashBack.setVisibility(View.VISIBLE);
-                }
+                cardFlip();
             }
         });
 
         tvFlashBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-                if (tvFlashBack.getVisibility() == View.VISIBLE)
-                {
-                    tvQuestion.setVisibility(View.VISIBLE);
-                    tvFlashBack.setVisibility(View.INVISIBLE);
-                }
+                cardFlip();
             }
         });
 
@@ -128,24 +129,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AddCardActivity.class);
-                MainActivity.this.startActivityForResult(i, REQUEST_CODE);
+                MainActivity.this.startActivityForResult(i, ADD_CARD_REQUEST_CODE);
             }
         });
 
         ivEditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String question = tvQuestion.getText().toString();
                 String answer = tvAnswer.getText().toString();
                 String wrong1 = tvWrong1.getText().toString();
                 String wrong2 = tvWrong2.getText().toString();
+
+                // Find the card in question
+                for (Flashcard f : allFlashcards) {
+                    if (f.getQuestion().equals(question)) {
+                        cardToEdit = f;
+                    }
+                }
 
                 Intent i = new Intent(MainActivity.this, AddCardActivity.class);
                 i.putExtra("question", question);
                 i.putExtra("answer", answer);
                 i.putExtra("wrong1", wrong1);
                 i.putExtra("wrong2", wrong2);
-                MainActivity.this.startActivityForResult(i, REQUEST_CODE);
+                MainActivity.this.startActivityForResult(i, EDIT_CARD_REQUEST_CODE);
             }
         });
 
@@ -180,11 +189,8 @@ public class MainActivity extends AppCompatActivity {
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currCardDisplayedIndex++;
-
-                if (currCardDisplayedIndex > allFlashcards.size() - 1) {
-                    currCardDisplayedIndex = 0;
-                }
+                clearScreen();
+                getRandomNumber(0, (allFlashcards.size() - 1));
 
                 tvQuestion.setText(allFlashcards.get(currCardDisplayedIndex).getQuestion());
                 tvFlashBack.setText(allFlashcards.get(currCardDisplayedIndex).getAnswer());
@@ -208,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         // REQUEST_CODE is defined above
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == ADD_CARD_REQUEST_CODE) {
             // Extract name value from result extras
             String question = data.getStringExtra("question");
             String answer = data.getStringExtra("answer");
@@ -221,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(tvQuestion,"New card created!", Snackbar.LENGTH_SHORT).show();
 
             fcDatabase.insertCard(new Flashcard(question, answer, wrong1, wrong2));
-
             allFlashcards = fcDatabase.getAllCards();
 
             // Change text in text views
@@ -230,6 +235,67 @@ public class MainActivity extends AppCompatActivity {
             tvAnswer.setText(answer);
             tvWrong1.setText(wrong1);
             tvWrong2.setText(wrong2);
+        }
+
+        else if (resultCode == RESULT_OK && requestCode == EDIT_CARD_REQUEST_CODE) {
+            // Extract name value from result extras
+            String question = data.getStringExtra("question");
+            String answer = data.getStringExtra("answer");
+            String wrong1 = data.getStringExtra("wrong1");
+            String wrong2 = data.getStringExtra("wrong2");
+
+            tvQuestion.setVisibility(View.VISIBLE);
+            tvFlashBack.setVisibility(View.INVISIBLE);
+
+            Snackbar.make(tvQuestion,"Card updated!", Snackbar.LENGTH_SHORT).show();
+
+            cardToEdit.setQuestion(question);
+            cardToEdit.setAnswer(answer);
+            cardToEdit.setWrongAnswer1(wrong1);
+            cardToEdit.setWrongAnswer2(wrong2);
+
+            fcDatabase.updateCard(cardToEdit);
+            allFlashcards = fcDatabase.getAllCards();
+
+            // Change text in text views
+            tvQuestion.setText(question);
+            tvFlashBack.setText(answer);
+            tvAnswer.setText(answer);
+            tvWrong1.setText(wrong1);
+            tvWrong2.setText(wrong2);
+        }
+    }
+
+    public int getRandomNumber(int minNumber, int maxNumber) {
+        Random rand = new Random();
+        return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
+    }
+
+    public void clearScreen()
+    {
+        // Clear answer
+        if (tvFlashBack.getVisibility() == View.VISIBLE)
+        {
+            tvQuestion.setVisibility(View.VISIBLE);
+            tvFlashBack.setVisibility(View.INVISIBLE);
+        }
+
+        // Clear Answer Selection
+        tvAnswer.setBackground(getDrawable(R.drawable.answer_background));
+        tvWrong1.setBackground(getDrawable(R.drawable.answer_background));
+        tvWrong2.setBackground(getDrawable(R.drawable.answer_background));
+    }
+
+    public void cardFlip()
+    {
+        if (tvQuestion.getVisibility() == View.VISIBLE)
+        {
+            tvQuestion.setVisibility(View.INVISIBLE);
+            tvFlashBack.setVisibility(View.VISIBLE);
+        } else if (tvFlashBack.getVisibility() == View.VISIBLE)
+        {
+            tvQuestion.setVisibility(View.VISIBLE);
+            tvFlashBack.setVisibility(View.INVISIBLE);
         }
     }
 }

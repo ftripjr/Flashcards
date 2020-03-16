@@ -8,4 +8,5 @@
     <string name="add_question">What is your question?</string>
     <string name="ans_hint">Correct Answer</string>
     <string name="wrong_hint">Incorrect Answer</string>
+    <string name="empty_card">You don\'t have any flashcards! Let\'s create some!</string>
 </resources>

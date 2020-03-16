@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AddCardActivity extends AppCompatActivity {
 
-    private final int REQ_CODE = 20;
-
     EditText etQuestion;
     EditText etAnswer;
     EditText etWrong1;
