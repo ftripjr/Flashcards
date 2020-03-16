@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase fcDatabase;
     Flashcard cardToEdit;
 
-    int currCardDisplayedIndex = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +77,17 @@ public class MainActivity extends AppCompatActivity {
             tvWrong2.setText(allFlashcards.get(0).getWrongAnswer2());
             tvFlashBack.setText(allFlashcards.get(0).getAnswer());
         } else {
-            Toast.makeText(this, TAG_IVNEXT + " -- DATABASE SIZE = Empty" , Toast.LENGTH_LONG).show();
+            Snackbar.make(tvQuestion,"DATABASE SIZE = Empty", Snackbar.LENGTH_SHORT).show();
             Log.i(TAG_IVNEXT, "DATABASE SIZE = " + allFlashcards.size());
+
+            Intent i = new Intent(MainActivity.this, EmptyCardActivity.class);
+            MainActivity.this.startActivityForResult(i, ADD_CARD_REQUEST_CODE);
         }
 
         relBackdrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearScreen();
+                resetScreen();
             }
         });
 
@@ -136,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         ivEditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String question = tvQuestion.getText().toString();
                 String answer = tvAnswer.getText().toString();
                 String wrong1 = tvWrong1.getText().toString();
@@ -189,14 +189,8 @@ public class MainActivity extends AppCompatActivity {
         ivNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearScreen();
-                getRandomNumber(0, (allFlashcards.size() - 1));
-
-                tvQuestion.setText(allFlashcards.get(currCardDisplayedIndex).getQuestion());
-                tvFlashBack.setText(allFlashcards.get(currCardDisplayedIndex).getAnswer());
-                tvAnswer.setText(allFlashcards.get(currCardDisplayedIndex).getAnswer());
-                tvWrong1.setText(allFlashcards.get(currCardDisplayedIndex).getWrongAnswer1());
-                tvWrong2.setText(allFlashcards.get(currCardDisplayedIndex).getWrongAnswer2());
+                resetScreen();
+                thanksNext();
             }
         });
 
@@ -204,6 +198,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fcDatabase.deleteCard(tvQuestion.getText().toString());
+                allFlashcards = fcDatabase.getAllCards();
+
+                if(allFlashcards.size() > 0) {
+                    thanksNext();
+                    resetScreen();
+                    Snackbar.make(tvQuestion,"DATABASE SIZE = " + allFlashcards.size(), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(tvQuestion,"DATABASE SIZE = Empty", Snackbar.LENGTH_SHORT).show();
+                    Log.i(TAG_IVNEXT, "DATABASE SIZE = " + allFlashcards.size());
+
+                    Intent i = new Intent(MainActivity.this, EmptyCardActivity.class);
+                    MainActivity.this.startActivityForResult(i, ADD_CARD_REQUEST_CODE);
+                }
             }
         });
 
@@ -271,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
     }
 
-    public void clearScreen()
+    public void resetScreen()
     {
         // Clear answer
         if (tvFlashBack.getVisibility() == View.VISIBLE)
@@ -297,5 +304,16 @@ public class MainActivity extends AppCompatActivity {
             tvQuestion.setVisibility(View.VISIBLE);
             tvFlashBack.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void thanksNext()
+    {
+        int index = getRandomNumber(0, allFlashcards.size()-1);
+
+        tvQuestion.setText(allFlashcards.get(index).getQuestion());
+        tvFlashBack.setText(allFlashcards.get(index).getAnswer());
+        tvAnswer.setText(allFlashcards.get(index).getAnswer());
+        tvWrong1.setText(allFlashcards.get(index).getWrongAnswer1());
+        tvWrong2.setText(allFlashcards.get(index).getWrongAnswer2());
     }
 }

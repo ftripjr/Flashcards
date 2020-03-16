@@ -19,7 +19,6 @@
         android:background="@drawable/question_background"
         android:elevation="5dp"
         android:gravity="center"
-        android:text="@string/flash_question"
         android:textSize="40sp" />
 
     <TextView
@@ -33,7 +32,6 @@
         android:background="@drawable/question_background"
         android:elevation="5dp"
         android:gravity="center"
-        android:text="@string/flash_answer"
         android:textSize="40sp"
         android:visibility="invisible" />
 
@@ -47,7 +45,6 @@
         android:layout_marginBottom="25dp"
         android:background="@drawable/answer_background"
         android:gravity="center"
-        android:text="@string/flash_wrong1"
         android:textSize="26sp" />
 
     <TextView
@@ -60,7 +57,6 @@
         android:layout_marginBottom="25dp"
         android:background="@drawable/answer_background"
         android:gravity="center"
-        android:text="@string/flash_answer"
         android:textSize="26sp" />
 
     <TextView
@@ -73,7 +69,6 @@
         android:layout_marginBottom="25dp"
         android:background="@drawable/answer_background"
         android:gravity="center"
-        android:text="@string/flash_wrong2"
         android:textSize="26sp" />
 
     <ImageView
@@ -140,10 +135,10 @@
         android:layout_height="60dp"
         android:layout_below="@id/tvFlashWrong2"
         android:layout_marginLeft="20dp"
-        android:layout_toEndOf="@id/ivDelete"
+        android:layout_toEndOf="@id/ivNext"
         android:elevation="5dp"
         android:visibility="visible"
-        app:srcCompat="@drawable/ic_next"
+        app:srcCompat="@drawable/ic_trash_can"
         tools:ignore="ContentDescription" />
 
 
