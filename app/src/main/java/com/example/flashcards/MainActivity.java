@@ -2,10 +2,12 @@ package com.example.flashcards;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(i, ADD_CARD_REQUEST_CODE);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
@@ -295,14 +298,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void cardFlip()
     {
+        // get the center for the clipping circle
+        int cx = tvFlashBack.getWidth() / 2;
+        int cy = tvFlashBack.getHeight() / 2;
+
+        // get the final radius for the clipping circle
+        float finalRadius = (float) Math.hypot(cx, cy);
+
+        // create the animator for this view (the start radius is zero)
+        Animator anim;
+
         if (tvQuestion.getVisibility() == View.VISIBLE)
         {
+            anim = ViewAnimationUtils.createCircularReveal(tvFlashBack, cx, cy, 0f, finalRadius);
             tvQuestion.setVisibility(View.INVISIBLE);
             tvFlashBack.setVisibility(View.VISIBLE);
+            anim.setDuration(1500);
+            anim.start();
         } else if (tvFlashBack.getVisibility() == View.VISIBLE)
         {
+            anim = ViewAnimationUtils.createCircularReveal(tvQuestion, cx, cy, 0f, finalRadius);
             tvQuestion.setVisibility(View.VISIBLE);
             tvFlashBack.setVisibility(View.INVISIBLE);
+            anim.setDuration(1500);
+            anim.start();
         }
     }
 

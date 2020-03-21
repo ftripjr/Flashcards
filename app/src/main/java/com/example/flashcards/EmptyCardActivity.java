@@ -32,6 +32,7 @@ public class EmptyCardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(EmptyCardActivity.this, AddCardActivity.class);
                 EmptyCardActivity.this.startActivityForResult(i, ADD_CARD_REQUEST_CODE);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }
